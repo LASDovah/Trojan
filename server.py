@@ -51,15 +51,16 @@ if __name__ == '__main__':
             elif command == 'cd':
                 recv_cd = conn.recv(4096).decode()
                 print(recv_cd)
-            #elif command == 'capture':
-            #    recv_screen = conn.recv(9999).decode()
+            elif command.startswith('touch'):
+                recv_touch = conn.recv(4096).decode()
+                print(recv_touch)
             else:
                 recv = conn.recv(4096).decode()
                 print(recv)
-
     except Exception as e:
         print("Error: ", e)
     except KeyboardInterrupt as k:
         print("KeyboardInterrupt: ",k)
     finally:
         server.close()
+
