@@ -31,7 +31,7 @@ if __name__ == '__main__':
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
         # IP - PORT
-        server.bind(('0.0.0.0', 4444))
+        server.bind(('0.0.0.0', 4448))
         print('[*] Providing connection.')
         # Listen server
         server.listen(1)
@@ -48,20 +48,25 @@ if __name__ == '__main__':
             if command == 'exit':
                 server.close()
                 break
-            elif command == 'cd':
-                recv_cd = conn.recv(4096).decode()
-                print(recv_cd)
-            elif command.startswith('touch'):
-                recv_touch = conn.recv(4096).decode()
-                print(recv_touch)
-            elif command.startswith('cat'):
-                recv_cat = conn.recv(4096).decode()
-                print(recv_cat)
-            elif command.startswith('nano'):
-                command_edit = command[5:0]####
-                while True:####
-                    content_file = input(f'{command_edit}>> ')####
-                    conn.send(content_file.encode())####
+            elif command.startswith('nano -a'):
+                content = input(f'[*]{command[8:]} >>')
+                while content != 'exit nano':
+                    conn.send(content.encode())
+                    recv_msg = conn.recv(4096).decode()
+                    print(recv_msg)
+                    content = input(f'[*]{command[8:]} >>')
+                conn.send(content.encode())
+                recv_msg_exit = conn.recv(4096).decode()
+                print(recv_msg_exit)  
+            elif command.startswith('nano -w'):
+                content = input(f'[*]{command[8:]} >>')
+                while content != 'exit nano':
+                    conn.send(content.encode())
+                    recv_msg = conn.recv(4096).decode()
+                    content = input(f'[*]{command[8:]} >>')
+                conn.send(content.encode())
+                recv_msg_exit = conn.recv(4096).decode()
+                print(recv_msg_exit)                  
             else:
                 recv = conn.recv(4096).decode()
                 print(recv)
@@ -71,4 +76,3 @@ if __name__ == '__main__':
         print("KeyboardInterrupt: ",k)
     finally:
         server.close()
-
